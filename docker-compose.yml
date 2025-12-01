@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    expose:
+      - "8080"
+    environment:
+      - PORT=8080
+      - HOST=0.0.0.0
+      - DATABASE_URL=sqlite:./data/todos.db
+      - RUST_LOG=info
+    working_dir: /app
+    volumes:
+      - backend-data:/app/data
+    user: root
+    restart: unless-stopped
+    networks:
+      - todo-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    expose:
+      - "80"
+    depends_on:
+      - backend
+    command: sh -c "sleep 10 && nginx -g 'daemon off;'"
+    restart: unless-stopped
+    networks:
+      - todo-network
+
+volumes:
+  backend-data:
+
+networks:
+  todo-network:
+    driver: bridge
+

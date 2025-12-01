@@ -1,0 +1,44 @@
+<div class="todo-list-container">
+  <app-todo-form (todoCreated)="onTodoCreated($event)"></app-todo-form>
+
+  <div class="stats-bar">
+    <div class="stat-item">
+      <span class="stat-label">Toplam:</span>
+      <span class="stat-value">{{ totalCount }}</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Tamamlanan:</span>
+      <span class="stat-value completed">{{ completedCount }}</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Devam Eden:</span>
+      <span class="stat-value pending">{{ totalCount - completedCount }}</span>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Todolar yükleniyor...</p>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+    <button (click)="loadTodos()" class="btn btn-retry">Tekrar Dene</button>
+  </div>
+
+  <div *ngIf="!loading && !error">
+    <div *ngIf="todos.length === 0" class="empty-state">
+      <p>Henüz hiç todo eklenmemiş.</p>
+      <p class="empty-subtitle">Yukarıdaki formu kullanarak ilk todo'nuzu ekleyin!</p>
+    </div>
+
+    <div *ngIf="todos.length > 0" class="todos-container">
+      <app-todo-item
+        *ngFor="let todo of todos"
+        [todo]="todo"
+        (toggleTodo)="onToggleTodo($event)"
+        (deleteTodo)="onDeleteTodo($event)"
+      ></app-todo-item>
+    </div>
+  </div>
+</div>

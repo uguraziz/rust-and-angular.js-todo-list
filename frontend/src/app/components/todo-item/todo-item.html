@@ -1,0 +1,35 @@
+<div class="todo-item" [class.completed]="todo.completed">
+  <div class="todo-content">
+    <div class="checkbox-container">
+      <input
+        type="checkbox"
+        [checked]="todo.completed"
+        (change)="onToggle()"
+        class="todo-checkbox"
+      />
+    </div>
+    
+    <div class="todo-details">
+      <h3 class="todo-title" [class.completed-text]="todo.completed">
+        {{ todo.title }}
+      </h3>
+      
+      <p class="todo-description" *ngIf="todo.description">
+        {{ todo.description }}
+      </p>
+      
+      <div class="todo-meta">
+        <span class="todo-date">{{ formatDate(todo.created_at) }}</span>
+        <span class="todo-status" [class.status-completed]="todo.completed">
+          {{ todo.completed ? 'Tamamlandı' : 'Devam Ediyor' }}
+        </span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="todo-actions">
+    <button (click)="onDelete()" class="btn btn-delete" title="Sil">
+      🗑️
+    </button>
+  </div>
+</div>

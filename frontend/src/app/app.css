@@ -1,0 +1,43 @@
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.app-header {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 30px 20px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 36px;
+  color: #333;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin: 10px 0 0 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.app-main {
+  flex: 1;
+  padding: 40px 20px;
+}
+
+.app-footer {
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+}
+
+.app-footer p {
+  margin: 0;
+}
