@@ -13,8 +13,12 @@ async fn main() -> std::io::Result<()> {
     dotenv().ok();
     env_logger::init();
 
-    let database_url = env::var("DATABASE_URL")
+    let mut database_url = env::var("DATABASE_URL")
         .unwrap_or_else(|_| "sqlite:./data/todos.db".to_string());
+    
+    if !database_url.contains("?mode=") {
+        database_url.push_str("?mode=rwc");
+    }
     
     let host = env::var("HOST")
         .unwrap_or_else(|_| "127.0.0.1".to_string());
@@ -53,6 +57,15 @@ async fn main() -> std::io::Result<()> {
             .app_data(web::Data::new(pool.clone()))
             .wrap(cors)
             .wrap(middleware::Logger::default())
+            .route("/", web::get().to(|| async {
+                actix_web::HttpResponse::Ok().json(serde_json::json!({
+                    "message": "Rust Todo API",
+                    "version": "1.0.0",
+                    "endpoints": {
+                        "health": "GET /health"
+                    }
+                }))
+            }))
             .route("/health", web::get().to(|| async { actix_web::HttpResponse::Ok().json(serde_json::json!({"status": "ok"})) }))
             .configure(routes::todo_routes::config)
     })
